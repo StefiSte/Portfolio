@@ -376,9 +376,10 @@ body.side-b .grain { opacity: .09; }
 .album__artist { display: block; font-weight: 700; font-size: 14.5px; }
 .album__title { display: block; color: var(--muted); font-size: 13.5px; }
 
-.track--trail { overflow: hidden; }
+.track--trail { overflow: hidden; overflow: clip; }
 .topo { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .55; z-index: 0; }
-.track--trail > :not(.topo) { position: relative; z-index: 1; }
+.track--trail > .track__body { position: relative; z-index: 1; }
+.track--trail > .track__meta { z-index: 1; } /* keeps its own sticky/relative positioning */
 .trails { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 .trails span { padding: 7px 12px; border: 1px dashed var(--line); border-radius: 99px; font: 400 12px var(--mono); color: var(--text-2); }
 
@@ -572,7 +573,7 @@ dialog::backdrop { background: rgba(6, 5, 4, .8); backdrop-filter: blur(4px); }
 }
 @media (max-width: 760px) {
   .track { grid-template-columns: 1fr; gap: 6px; padding-top: 72px; padding-bottom: 72px; }
-  .track__meta { position: static; flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+  .track__meta { position: relative; top: auto; flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
   .track__no { font-size: 56px; margin: 0 6px 0 0; }
   .demo__grid { grid-template-columns: 1fr; }
   .demo__stage { order: -1; }
