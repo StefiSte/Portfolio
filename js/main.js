@@ -121,8 +121,9 @@
     const w = svg.clientWidth, h = svg.clientHeight;
     if (!w || !h) return;
     svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-    const peaks = [[w * .86, h * .22, 11], [w * .62, h * .95, 9], [w * .08, h * .7, 7]];
     let out = '';
+    if (w < 760) { svg.innerHTML = topoMobile(w, h); return; }
+    const peaks = [[w * .86, h * .22, 11], [w * .62, h * .95, 9], [w * .08, h * .7, 7]];
     peaks.forEach(([cx, cy, n], pi) => {
       for (let r = 1; r <= n; r++) {
         const base = r * 30, p1 = pi * 1.7 + r * .3, p2 = pi * 2.3 - r * .2;
@@ -137,6 +138,32 @@
       }
     });
     svg.innerHTML = out;
+  }
+
+  // Phones: two peaks in opposite corners. Every ring of a peak is a scaled copy
+  // of the same outline, so rings never cross, and the ring count is capped so
+  // the two peaks never touch each other.
+  function topoMobile(w, h) {
+    const peaks = [[w * .92, h * .08, 0], [w * .06, h * .96, 1]];
+    const gap = 22, maxBump = 1.2;
+    const D = Math.hypot(peaks[0][0] - peaks[1][0], peaks[0][1] - peaks[1][1]);
+    const n = Math.max(3, Math.min(10, Math.floor((D * .46) / (gap * maxBump))));
+    let out = '';
+    peaks.forEach(([cx, cy, pi]) => {
+      const p1 = pi * 1.7 + .4, p2 = pi * 2.3 + 1.1;
+      for (let r = 1; r <= n; r++) {
+        const base = r * gap;
+        let d = '';
+        for (let i = 0; i <= 96; i++) {
+          const t = i / 96 * Math.PI * 2;
+          const rr = base * (1 + .12 * Math.sin(3 * t + p1) + .07 * Math.sin(5 * t + p2));
+          d += (i ? 'L' : 'M') + (cx + rr * Math.cos(t)).toFixed(1) + ' ' + (cy + rr * .82 * Math.sin(t)).toFixed(1);
+        }
+        const major = r % 4 === 0;
+        out += `<path d="${d}Z" fill="none" stroke="rgba(239,230,216,${major ? .18 : .08})" stroke-width="${major ? 1.1 : .8}"/>`;
+      }
+    });
+    return out;
   }
 
   /* ------------------------------------------------------------------
