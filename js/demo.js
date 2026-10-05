@@ -1,6 +1,6 @@
 /* ==========================================================================
    Diversity maximization with outliers — a small teaching demo.
-   1. Set aside the z most isolated points (distance to their 3rd nearest neighbour).
+   1. Set aside the z points with the largest nearest-neighbour distance.
    2. Start from the inlier farthest from the centroid.
    3. Greedily add the inlier farthest from the chosen set (farthest-first / GMM).
    The dashed circles have radius = half the minimum pairwise distance among
@@ -95,8 +95,8 @@
       if (!n) return empty;
       const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 
-      // 1. isolation score = distance to the m-th nearest neighbour
-      const m = Math.min(3, n - 1);
+      // 1. isolation score = nearest-neighbour distance (outliers = the z largest, as in the paper)
+      const m = Math.min(1, n - 1);
       const score = P.map((p, i) => {
         if (m < 1) return 0;
         const ds = [];

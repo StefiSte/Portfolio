@@ -11,6 +11,7 @@ css/style.css         styles (Side A / Side B palettes at the top, as CSS variab
 js/content.js         ← Side B content: photos, band, albums, trails, dog
 js/demo.js            the diversity-maximization demo (track A1)
 js/main.js            player bar, progress line, flip, lightbox, run-out
+js/turntable.js       B3 turntable + SoundCloud player
 assets/               CV (press kit), favicon, photos/, music/
 .nojekyll             tells GitHub Pages to serve files as-is
 ```
@@ -38,12 +39,12 @@ To preview locally, run `python3 -m http.server` in this folder and open http://
 |---|---|
 | Add photos | Put JPG/WebP files (about 2000px on the long side, under 500 KB) in `assets/photos/`, then list them in `photos` inside `js/content.js` |
 | Band name, links, live video | `band` in `js/content.js` |
-| Albums for "On Repeat" | Put square covers in `assets/music/`, then fill `albums` in `js/content.js` |
+| Records on the turntable (B3) | `records` in `js/content.js`. For a new track, open `https://soundcloud.com/oembed?format=json&url=YOUR_LINK` in a browser and copy the number after `tracks%2F` into `sc` and `thumbnail_url` into `cover` (or send the link to Claude) |
 | Trails | `trails` in `js/content.js` |
 | Lagotto photo and name | `dog` in `js/content.js` |
 | Replace the CV | Overwrite `assets/Stefano_Zanon_CV.pdf` (keep the same name) |
 | Add or edit a track | Copy a `<section class="track">` block in `index.html`. Also add it to the tracklist at the top. The player picks it up automatically from `data-track` and `data-title`. |
-| arXiv link (A1) | Edit the "Status" fact in track A1 |
+| arXiv link | Appears in 3 places in `index.html`: the cover highlights, the paper card in track A1, and the "Read the paper" button. Search for `arxiv.org` |
 
 ## Notes
 

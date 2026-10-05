@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Stefano Zanon — Computer Engineer</title>
-  <meta name="description" content="Stefano Zanon: computer engineer working on algorithms and AI at the University of Padova. Research on diversity maximization, Scuola Ortogonale (ELICSIR), LeadTheFuture mentee, hackathon winner. Also: photos, music and trails.">
+  <meta name="description" content="Stefano Zanon: computer engineer working on algorithms and AI at the University of Padova. Research on streaming algorithms for robust max-min diversification, Scuola Ortogonale (ELICSIR), LeadTheFuture mentee, hackathon winner. Also: photos, music and trails.">
   <meta name="author" content="Stefano Zanon">
   <meta name="theme-color" content="#141110">
   <meta property="og:type" content="website">
@@ -55,8 +55,8 @@
         <ul class="cover__facts mono" aria-label="Highlights">
           <li class="is-key">BSc 110/110 cum laude</li>
           <li class="is-key">GPA 29.64 / 30</li>
-          <li>Paper under submission</li>
-          <li>Scuola Ortogonale ’26</li>
+          <li class="is-key"><a href="https://arxiv.org/abs/2610.01456" target="_blank" rel="noopener">Paper on arXiv ↗</a></li>
+          <li class="is-key">Scuola Ortogonale ’26</li>
         </ul>
       </div>
     </section>
@@ -68,7 +68,7 @@
         <div>
           <div class="side-head"><h3>Side A</h3><span class="mono">work</span></div>
           <ol class="tl">
-            <li><a href="#a1"><span class="tl__n mono">A1</span><span class="tl__t">Diversity, Maximized<small>research paper</small></span><span class="tl__y mono">2026</span></a></li>
+            <li><a href="#a1"><span class="tl__n mono">A1</span><span class="tl__t">Diversity, Maximized<small>research paper · on arXiv</small></span><span class="tl__y mono">2026</span></a></li>
             <li><a href="#a2"><span class="tl__n mono">A2</span><span class="tl__t">Scuola Ortogonale<small>ELICSIR Foundation</small></span><span class="tl__y mono">2026</span></a></li>
             <li><a href="#a3"><span class="tl__n mono">A3</span><span class="tl__t">LeadTheFuture<small>feat. Emanuele Troiani</small></span><span class="tl__y mono">2026</span></a></li>
             <li><a href="#a4"><span class="tl__n mono">A4</span><span class="tl__t">Arboris<small>hackathon winner</small></span><span class="tl__y mono">2026</span></a></li>
@@ -107,10 +107,16 @@
         </div>
         <div class="track__body">
           <h2 class="track__title" id="a1-t">Diversity, Maximized</h2>
-          <p class="track__plain">My research: robust, efficient algorithms that pick the most varied subset of a huge dataset, even when the data contains outliers.</p>
+          <p class="track__plain">My research: a streaming algorithm that picks the <i>k</i> most spread-out points of a huge dataset in a single pass, ignores the outliers, and uses memory that doesn't grow with the data.</p>
+          <a class="paper" href="https://arxiv.org/abs/2610.01456" target="_blank" rel="noopener">
+            <span class="paper__label mono">Paper · arXiv:2610.01456</span>
+            <span class="paper__title">Streaming algorithms for robust max-min diversification</span>
+            <span class="paper__meta mono">with A. Pietracaprina &amp; G. Pucci · read on arXiv ↗</span>
+          </a>
           <div class="prose">
-            <p>Imagine millions of items (documents, products, images) and room to show only ten. Which ten? You want them as different from each other as possible, so together they cover the whole range. That's <strong>diversity maximization</strong>.</p>
-            <p>The catch is that real data is noisy. A few strange points sit far away from everything else, and the classic algorithms happily pick them because they look “very different”. With my advisors I designed algorithms that set those outliers aside and still scale to large inputs.</p>
+            <p>Imagine millions of items (documents, products, images) and room to show only ten. Which ten? You want them as different from each other as possible, so together they cover the whole range. Formally, that's <strong>max-min diversification</strong>: choose <i>k</i> points so that the smallest distance between any two of them is as large as possible.</p>
+            <p>The catch is that this objective is very sensitive to noise. A few isolated points look “very different” and get picked. A robust version of the problem excludes <i>z</i> outliers: the points whose nearest neighbour is farthest away. The previous streaming algorithm for it needed memory that grows with the data, could return fewer than <i>k</i> points, and only excluded outliers with some probability.</p>
+            <p>With Andrea Pietracaprina and Geppino Pucci, I designed a <strong>deterministic</strong> algorithm that reads the data once, as a stream, and always returns <strong>exactly <i>k</i> inliers</strong>, assuming inliers and outliers are reasonably well separated. Its solution is a <strong>(2+ε)-approximation</strong>, only ε above the best ratio achievable in polynomial time even when there are no outliers. It adapts automatically to the data's doubling dimension, and for wide ranges of parameters its memory doesn't depend on the size of the dataset.</p>
           </div>
 
           <figure class="insert">
@@ -121,11 +127,15 @@
             </figcaption>
           </figure>
 
-          <dl class="facts">
+          <dl class="facts facts--2">
+            <div><dt class="mono">Guarantee</dt><dd>Exactly <i>k</i> inliers · (2+ε)-approximation · deterministic</dd></div>
+            <div><dt class="mono">Resources</dt><dd>One pass · memory independent of <i>n</i> for wide parameter ranges</dd></div>
             <div><dt class="mono">With</dt><dd>Andrea Pietracaprina &amp; Geppino Pucci, University of Padova</dd></div>
-            <div><dt class="mono">Status</dt><dd>Paper under submission · arXiv preprint coming soon</dd></div>
-            <div><dt class="mono">Origin</dt><dd>My BSc thesis, continued after graduation</dd></div>
+            <div><dt class="mono">Status</dt><dd>Preprint on arXiv · under submission · grew out of my BSc thesis</dd></div>
           </dl>
+          <div class="track__actions">
+            <a class="btn btn--primary" href="https://arxiv.org/abs/2610.01456" target="_blank" rel="noopener">Read the paper on arXiv ↗</a>
+          </div>
         </div>
       </section>
 
@@ -351,7 +361,65 @@
         </div>
         <div class="track__body">
           <h2 class="track__title track__title--b" id="b3-t">On Repeat</h2>
-          <p class="track__plain">Records I keep coming back to.</p>
+          <p class="track__plain">Records I keep coming back to. Pick one from the crate and drop it on the deck.</p>
+          <div class="deck-wrap">
+            <div class="deck" id="deck">
+              <span class="deck__hinge deck__hinge--l" aria-hidden="true"></span>
+              <span class="deck__hinge deck__hinge--r" aria-hidden="true"></span>
+              <div class="deck__platter" id="platter" aria-hidden="true">
+                <div class="deck__mat"><span>SZ</span></div>
+                <div class="deck__record" id="deckRecord"><span class="deck__label"><img id="deckLabel" alt=""></span></div>
+              </div>
+              <span class="deck__sheen" aria-hidden="true"></span>
+              <span class="deck__glow" aria-hidden="true"></span>
+              <span class="deck__lamp" aria-hidden="true"></span>
+              <svg class="deck__svg" viewBox="0 0 100 82" aria-hidden="true">
+                <defs>
+                  <radialGradient id="tnBase" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#f6f3ee"/><stop offset=".6" stop-color="#c9c4bc"/><stop offset="1" stop-color="#8f8a82"/></radialGradient>
+                  <linearGradient id="tnWeight" x1="0" x2="1"><stop offset="0" stop-color="#4f4c48"/><stop offset=".45" stop-color="#e3dfd8"/><stop offset=".6" stop-color="#bdb8b0"/><stop offset="1" stop-color="#4f4c48"/></linearGradient>
+                </defs>
+                <!-- arm rest + clip -->
+                <rect x="84.1" y="60.2" width="2.6" height="3.6" rx=".8" fill="#2b2826"/>
+                <circle cx="85.4" cy="62" r=".7" fill="#56524d"/>
+                <!-- base: plate, height ring, gimbal -->
+                <circle cx="82" cy="16" r="8.4" fill="url(#tnBase)" stroke="#86817a" stroke-width=".25"/>
+                <circle cx="82" cy="16" r="6.6" fill="none" stroke="#3a3633" stroke-width=".9" stroke-dasharray=".25 .55"/>
+                <circle cx="82" cy="16" r="5.3" fill="#262321"/>
+                <g class="deck__arm" id="tonearm">
+                  <!-- counterweight -->
+                  <rect x="79.3" y=".8" width="5.4" height="8" rx="1.1" fill="url(#tnWeight)"/>
+                  <path d="M79.3 3 H84.7 M79.3 4.4 H84.7 M79.3 5.8 H84.7" stroke="rgba(0,0,0,.25)" stroke-width=".2"/>
+                  <rect x="81.4" y="8.4" width="1.2" height="5.4" fill="#a39e96"/>
+                  <!-- tube: shadow, body, highlight -->
+                  <path d="M82 16 C 82 30, 86.2 40, 83.6 52 S 81.6 59.5, 82 61.2" fill="none" stroke="#9f9a92" stroke-width="1.55" stroke-linecap="round"/>
+                  <path d="M82 16 C 82 30, 86.2 40, 83.6 52 S 81.6 59.5, 82 61.2" fill="none" stroke="#f7f5f1" stroke-width=".5" stroke-linecap="round" transform="translate(-.3 -.1)"/>
+                  <!-- headshell, cartridge, finger lift -->
+                  <path d="M80.2 60.6 L83.8 60.6 L84.3 67 L79.7 67 Z" fill="#cfcac2" stroke="#77726b" stroke-width=".2"/>
+                  <rect x="80.5" y="62.4" width="3" height="4" rx=".4" fill="#151413"/>
+                  <rect x="81.3" y="65.6" width="1.4" height="1.1" rx=".2" fill="#e0a43a"/>
+                  <path d="M84 61.6 L87.2 60.6" stroke="#d8d4cc" stroke-width=".7" stroke-linecap="round"/>
+                  <!-- pivot cap -->
+                  <circle cx="82" cy="16" r="2.5" fill="url(#tnBase)" stroke="#6b6863" stroke-width=".25"/>
+                </g>
+              </svg>
+              <button class="deck__power" id="deckPower" type="button" aria-pressed="true" aria-label="Power"></button>
+              <button class="deck__start" id="deckStart" type="button" aria-pressed="false">start·stop</button>
+              <span class="deck__speed">
+                <button type="button" class="is-on" data-speed="33" aria-pressed="true" aria-label="33 RPM">33</button>
+                <button type="button" data-speed="45" aria-pressed="false" aria-label="45 RPM">45</button>
+              </span>
+              <span class="deck__pitchval mono" id="pitchVal" aria-hidden="true">±0.0</span>
+              <span class="deck__pitch" id="deckPitch" role="slider" tabindex="0" aria-label="Pitch" aria-orientation="vertical" aria-valuemin="-8" aria-valuemax="8" aria-valuenow="0" aria-valuetext="0.0 percent"><i class="deck__pitchknob" id="pitchKnob"></i></span>
+              <span class="deck__brand mono" aria-hidden="true">SZ-1 · direct drive</span>
+            </div>
+            <div class="deck-card" id="deckCard">
+              <p class="deck-card__label mono">Now on the deck</p>
+              <p class="deck-card__title" id="deckTitle">Nothing yet. Pick a record from the crate.</p>
+              <div class="deck-card__player" id="deckPlayer"><span>The SoundCloud player appears here when you pick a record.</span></div>
+              <p class="deck-card__note">Streams from SoundCloud and only loads once you pick a record. If it doesn't start by itself, press play in the player. <a id="deckLink" href="#" target="_blank" rel="noopener" hidden>Open on SoundCloud ↗</a></p>
+            </div>
+          </div>
+          <h3 class="crate__head mono">The crate · <span id="crateCount"></span> records</h3>
           <ul class="crate" id="crate"></ul>
         </div>
       </section>
@@ -380,7 +448,26 @@
         <div class="track__body">
           <h2 class="track__title track__title--b" id="b5-t">Lagotto</h2>
           <p class="track__plain">Every record has a hidden track. Mine has four legs and curly hair.</p>
-          <div class="dog" id="dog"></div>
+          <div class="hidden-track">
+            <div class="hidden-track__photos">
+              <div class="dog" id="dog"></div>
+              <button class="polaroid" id="dogPolaroid" type="button" hidden aria-label="Open the photo of June swimming">
+                <img alt="" loading="lazy">
+                <span>off duty</span>
+              </button>
+            </div>
+            <div class="dog-notes">
+              <p class="dog-notes__label mono">Liner notes · hidden track</p>
+              <dl class="dog-notes__list">
+                <div><dt class="mono">Name</dt><dd>June</dd></div>
+                <div><dt class="mono">Breed</dt><dd>Lagotto Romagnolo, Italy's curly-coated truffle dog and water retriever</dd></div>
+                <div><dt class="mono">Specialty</dt><dd>Swimming after sticks <a href="#b1" class="dog-notes__ref mono">frame 17A ▸</a></dd></div>
+                <div><dt class="mono">Position</dt><dd>Chief morale officer</dd></div>
+                <div><dt class="mono">Rating</dt><dd><span class="stars" aria-label="Five out of five">★★★★★</span> Very good girl</dd></div>
+              </dl>
+              <p class="dog-notes__foot">Accepts payment in cuddles and ice cream.</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -462,6 +549,7 @@
       <span class="player__now" id="nowPlaying" aria-live="polite">Cover</span>
     </div>
     <div class="player__ctrls">
+      <button type="button" id="musicToggle" class="player__music" hidden aria-label="Pause music" title="Music from the deck"><svg class="i-pause" viewBox="0 0 16 16"><path d="M4 3h3v10H4zM9 3h3v10H9z"/></svg><svg class="i-play" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z"/></svg></button>
       <button type="button" id="prevTrack" aria-label="Previous track"><svg viewBox="0 0 16 16"><path d="M3 3h2v10H3zM14 3v10L6 8z"/></svg></button>
       <button type="button" id="tlToggle" aria-label="Open tracklist" aria-expanded="false" aria-controls="tlMenu"><svg viewBox="0 0 16 16"><path d="M2 3h12v1.6H2zM2 7.2h12v1.6H2zM2 11.4h8v1.6H2z"/></svg></button>
       <button type="button" id="nextTrack" aria-label="Next track"><svg viewBox="0 0 16 16"><path d="M11 3h2v10h-2zM2 3v10l8-5z"/></svg></button>
@@ -475,7 +563,7 @@
   </div>
 
   <!-- ============ DEMO DIALOG ============ -->
-  <dialog class="demo" id="demoDialog" aria-labelledby="demo-title">
+  <dialog class="demo" id="demoDialog" aria-labelledby="demo-title" tabindex="-1" autofocus>
     <div class="demo__inner">
       <header class="demo__head">
         <p class="mono demo__kicker">Track A1 · Liner insert</p>
@@ -485,12 +573,12 @@
       <div class="demo__grid">
         <div class="demo__text">
           <ol class="demo__steps">
-            <li><b>Set aside the outliers.</b> The <i>z</i> most isolated points (red) are ignored. They look “different”, but they're just noise.</li>
+            <li><b>Set aside the outliers.</b> The <i>z</i> points whose nearest neighbour is farthest away (red) are excluded, the same definition used in the paper. They look “different”, but they're just noise.</li>
             <li><b>Start at the edge.</b> Pick the point farthest from the centre of the remaining data.</li>
             <li><b>Go farthest-first.</b> Keep adding the point farthest from everything chosen so far, until you have <i>k</i>.</li>
           </ol>
           <p class="demo__note">The dashed circles never overlap. Their radius is half the smallest distance between two chosen points, and that distance is what we want to maximise.</p>
-          <p class="demo__disclaimer">This is a simplified teaching version of the idea. The algorithms in the paper are designed for millions of points and come with provable guarantees.</p>
+          <p class="demo__disclaimer">This is a simplified, offline teaching version. The algorithm in the paper reads the points once as a stream, keeps only a small coreset in memory, and is guaranteed to return exactly k inliers forming a (2+ε)-approximate solution.</p>
         </div>
         <div class="demo__stage">
           <div class="demo__canvas" id="bigDemo"></div>
@@ -508,7 +596,7 @@
   </dialog>
 
   <!-- ============ LIGHTBOX ============ -->
-  <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
+  <dialog class="lightbox" id="lightbox" aria-label="Photo viewer" tabindex="-1" autofocus>
     <button class="lightbox__close" type="button" data-close-lightbox aria-label="Close">×</button>
     <button class="lightbox__nav lightbox__nav--prev" type="button" data-lb="-1" aria-label="Previous photo">‹</button>
     <figure><img id="lbImg" alt=""><figcaption class="mono" id="lbCap"></figcaption></figure>
@@ -518,5 +606,6 @@
   <script src="js/content.js"></script>
   <script src="js/demo.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/turntable.js"></script>
 </body>
 </html>

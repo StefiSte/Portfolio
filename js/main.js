@@ -20,11 +20,17 @@
     const sheet = $('#contactSheet');
     if (!sheet) return;
     if (photos.length) {
-      sheet.innerHTML = photos.map((p, i) => `
+      const frames = photos.map((p, i) => `
         <button class="frame" type="button" data-photo="${i}" aria-label="Open photo ${i + 1}${p.caption ? ': ' + esc(p.caption) : ''}">
-          <img src="${esc(p.src)}" alt="${esc(p.caption || '')}" loading="lazy" decoding="async">
+          <img src="${esc(p.thumb || p.src)}" alt="${esc(p.alt || p.caption || '')}" loading="lazy" decoding="async">
           <span class="frame__no">${String(i + 12).padStart(2, '0')}A ▸</span>
-        </button>`).join('');
+        </button>`);
+      // fill the last row of the sheet with unexposed frames
+      const total = Math.max(3, Math.ceil(photos.length / 3) * 3);
+      for (let i = photos.length; i < total; i++) {
+        frames.push(`<div class="frame frame--blank" aria-hidden="true"><span class="frame__no">${String(i + 12).padStart(2, '0')}A ▸</span></div>`);
+      }
+      sheet.innerHTML = frames.join('');
     } else {
       const tones = [['#6b4a3a', '#d9a273'], ['#2f3d33', '#8fa58a'], ['#3a3f5a', '#c48b6c'], ['#5e5248', '#e6d2b0'], ['#25303b', '#7f98a8'], ['#4d2c25', '#e28a5a']];
       const n = SITE.photoPlaceholders || 9;
@@ -59,17 +65,14 @@
   function renderCrate() {
     const el = $('#crate');
     if (!el) return;
-    const albums = (SITE.albums || []).filter(a => a && (a.artist || a.album));
-    const grads = ['linear-gradient(135deg,#c2502e,#3b1f1a)', 'linear-gradient(160deg,#e8c27a,#5a6b4a)', 'linear-gradient(120deg,#2d3a5c,#d48a6a)', 'linear-gradient(200deg,#7b2d26,#e3b04b)', 'linear-gradient(45deg,#1f3b3a,#9fc0a8)', 'linear-gradient(90deg,#3b2b4a,#c97b63)'];
-    const list = albums.length ? albums : Array.from({ length: SITE.albumPlaceholders || 6 }, () => ({ artist: 'Artist', album: 'Album title' }));
-    el.innerHTML = list.map((a, i) => {
-      const cover = a.cover ? `<img src="${esc(a.cover)}" alt="" loading="lazy" decoding="async">` : '';
-      const inner = `<span class="album__art"><span class="album__disc"></span><span class="album__cover" style="${a.cover ? '' : 'background:' + grads[i % grads.length]}">${cover}</span></span>
-        <span class="album__artist">${esc(a.artist)}</span><span class="album__title">${esc(a.album)}</span>`;
-      return `<li>${a.url
-        ? `<a class="album" href="${esc(a.url)}" target="_blank" rel="noopener" aria-label="${esc(a.artist)} — ${esc(a.album)}">${inner}</a>`
-        : `<div class="album" tabindex="-1">${inner}</div>`}</li>`;
-    }).join('');
+    const recs = (SITE.records || []).filter(r => r && r.sc);
+    const count = $('#crateCount');
+    if (count) count.textContent = recs.length;
+    el.innerHTML = recs.map((r, i) => `<li>
+      <button class="album" type="button" data-rec="${i}" aria-label="Play ${esc(r.title)} by ${esc(r.artist)}">
+        <span class="album__art"><span class="album__disc"></span><span class="album__cover"><img src="${esc(r.cover)}" alt="" loading="lazy" decoding="async"><span class="album__play" aria-hidden="true">▶</span><span class="album__badge mono" aria-hidden="true">on the deck</span></span></span>
+        <span class="album__artist">${esc(r.title)}</span><span class="album__title">${esc(r.artist)}</span>
+      </button></li>`).join('');
   }
 
   function renderTrails() {
@@ -86,6 +89,11 @@
       ? `<img src="${esc(d.src)}" alt="${esc(d.name ? d.name + ', my Lagotto Romagnolo' : 'My Lagotto Romagnolo')}" loading="lazy">`
       : `<span class="frame__hint">Photo of the Lagotto<br>coming soon</span>`;
     if (d.name) $('#b5-t').textContent = d.name;
+    const pol = $('#dogPolaroid');
+    if (pol && d.snapshot) {
+      pol.querySelector('img').src = d.snapshot;
+      pol.hidden = false;
+    }
   }
 
   renderSheet(); renderBand(); renderCrate(); renderTrails(); renderDog();
@@ -356,6 +364,7 @@
   const stats = $('#demoStats');
   function openDemo() {
     if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+    dlg.focus({ preventScroll: true }); // focus the window, not the close button (no ring on open)
     document.body.style.overflow = 'hidden';
     if (!big) {
       big = new DiversityDemo($('#bigDemo'), {
@@ -396,14 +405,23 @@
     lbIdx = (i + photos.length) % photos.length;
     const p = photos[lbIdx];
     lbImg.src = p.src;
-    lbImg.alt = p.caption || '';
+    lbImg.alt = p.alt || p.caption || '';
     lbCap.textContent = `${String(lbIdx + 1).padStart(2, '0')} / ${String(photos.length).padStart(2, '0')}${p.caption ? ' · ' + p.caption : ''}`;
   }
+  const polaroid = $('#dogPolaroid');
+  if (polaroid) polaroid.addEventListener('click', () => {
+    const i = (SITE.dog || {}).snapshotPhoto;
+    if (i == null || !photos[i]) return;
+    showPhoto(i);
+    lb.showModal();
+    lb.focus({ preventScroll: true });
+  });
   $('#contactSheet').addEventListener('click', (e) => {
     const f = e.target.closest('[data-photo]');
     if (!f) return;
     showPhoto(Number(f.dataset.photo));
     lb.showModal();
+    lb.focus({ preventScroll: true });
   });
   lb.addEventListener('click', (e) => {
     if (e.target.closest('[data-close-lightbox]') || e.target === lb) lb.close();

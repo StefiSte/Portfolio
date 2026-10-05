@@ -1,0 +1,8 @@
+# macOS clutter
+.DS_Store
+
+# full-size camera originals (optimised copies live in assets/photos/)
+assets/photos/originals/
+
+# working files from Claude (style previews etc.), not part of the site
+Claude outputs/
