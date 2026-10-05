@@ -643,8 +643,10 @@ body.side-b .grain { opacity: .09; }
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(36px, 6vw, 80px); align-items: center;
   border-top: 1px solid var(--line); scroll-margin-top: -40px;
 }
-.runout__disc { width: 100%; max-width: 460px; justify-self: center; }
-.runout__svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 24px 40px rgba(0, 0, 0, .55)); }
+/* The shadow lives on the still wrapper, not on the spinning SVG: on iPhone a blurred
+   filter on a rotating element is drawn in a square layer, which showed as a faint rectangle. */
+.runout__disc { width: 100%; max-width: 460px; aspect-ratio: 1; justify-self: center; border-radius: 50%; box-shadow: 0 24px 40px -6px rgba(0, 0, 0, .55); }
+.runout__svg { width: 100%; height: auto; display: block; border-radius: 50%; }
 .runout__disc.is-landing .runout__svg { animation: spinDown 5s cubic-bezier(.15, .55, .25, 1) forwards; }
 @keyframes spinDown { from { rotate: 0deg; } to { rotate: 1080deg; } }
 .runout__vinyl { fill: #0d0a09; }
